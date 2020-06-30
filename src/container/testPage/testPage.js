@@ -1,14 +1,14 @@
 import React from 'react';
-import axios from 'axios';
 import * as _ from 'lodash';
 import Select from 'react-select';
 
 import './testPage.css';
+import { API } from '../../utils';
 
 const requestsData = [
-    { requestURL: 'https://beta.autobooking.com/api/test/v1/search/terms', label: 'terms' },
-    { requestURL: 'https://beta.autobooking.com/api/test/v1/search/styles', label: 'styles' },
-    { requestURL: 'https://beta.autobooking.com/api/test/v1/search/brands_terms', label: 'brandsTerms' },
+    { requestURL: '/terms', label: 'terms' },
+    { requestURL: '/styles', label: 'styles' },
+    { requestURL: '/brands_terms', label: 'brandsTerms' },
 ]
 
 let data = null
@@ -28,18 +28,11 @@ class TestPage extends React.Component {
 
     componentDidMount() {
         _.map(requestsData, item => {
-            axios.get(item.requestURL)
-                .then((response) => {
-                    this.setState({
-                        [item.label]: response.data,
-                    })
+            API(item.requestURL).then((response) => {
+                this.setState({
+                    [item.label]: response.data,
                 })
-                .catch((error) => {
-                    // handle error
-                })
-                .finally(() => {
-                    // always executed
-                });
+            })
         })
         _.map(this.props.match.params, (param, key) => {
             return this.setState({
