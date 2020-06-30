@@ -67,17 +67,19 @@ class TestPage extends React.Component {
     }
 
     renderDropdown() {
-        if (!this.state.brandsTerms || !this.state.terms || !this.state.styles) { return null }
+        const {brandsTerms, styles, terms} = this.state
+        if (!brandsTerms || !terms || !styles) { return null }
         return _.map(requestsData, (item, key) => {
+            const selected  = this.state[item.label + 'Selected']
             const checkCurrentValue = _.filter(this.state[item.label].data, selectItem => {
-                return selectItem.slug === this.state[item.label + 'Selected']
+                return selectItem.slug === selected
             })
             const options = _.map(this.state[item.label].data, item => {
                 return { value: item.slug, label: item.label }
             })
-            if (!checkCurrentValue[0] && this.state[item.label + 'Selected']) { return <div key={key}>Loading...</div> }
-            const label = this.state[item.label + 'Selected'] ? checkCurrentValue[0].label : ''
-            const value = this.state[item.label + 'Selected'] ? checkCurrentValue[0].slug : ''
+            if (!checkCurrentValue[0] && selected) { return <div key={key}>Loading...</div> }
+            const label = selected ? checkCurrentValue[0].label : ''
+            const value = selected ? checkCurrentValue[0].slug : ''
             return <Select
                 key={key}
                 defaultValue={{ label, value }}
