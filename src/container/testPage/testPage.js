@@ -40,11 +40,6 @@ class TestPage extends React.Component {
                 [key + "URL"]: '/' + param
             })
         })
-        _.map(data, (item, key) => {
-            this.setState({
-                [key]: item.value
-            })
-        })
     }
 
     pref = (currentDropdown) => {
